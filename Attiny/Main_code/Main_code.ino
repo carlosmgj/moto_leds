@@ -27,11 +27,13 @@ void setup() {
 #endif
   // End of trinket special code
   pinMode(0,INPUT);
+  pinMode(1,INPUT);
+  pinMode(2,INPUT);
   pixels.begin(); // This initializes the NeoPixel library.
 }
 
 void loop() {
-  if(digitalRead(1)==HIGH)
+  if(digitalRead(0)==HIGH)
   {
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
 
@@ -54,4 +56,56 @@ void loop() {
     pixels.show(); // This sends the updated pixel color to the hardware.
     delay(500);
 }
+
+
+else if(digitalRead(1)==HIGH)
+  {
+  // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
+
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(150,0,0)); // Moderately bright green color.
+  
+      pixels.show(); // This sends the updated pixel color to the hardware.
+  
+      delay(delayval); // Delay for a period of time (in milliseconds).
+  
+    }
+    delay(500);
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
+    }
+    pixels.show(); // This sends the updated pixel color to the hardware.
+    delay(500);
+}
+
+
+else if(digitalRead(2)==HIGH)
+  {
+  // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
+
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(0,0,150)); // Moderately bright green color.
+  
+      pixels.show(); // This sends the updated pixel color to the hardware.
+  
+      delay(delayval); // Delay for a period of time (in milliseconds).
+  
+    }
+    delay(500);
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
+    }
+    pixels.show(); // This sends the updated pixel color to the hardware.
+    delay(500);
+}
+
+
 }
