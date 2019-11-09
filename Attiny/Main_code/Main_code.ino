@@ -26,30 +26,32 @@ void setup() {
   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
 #endif
   // End of trinket special code
-
+  pinMode(0,INPUT);
   pixels.begin(); // This initializes the NeoPixel library.
 }
 
 void loop() {
-
+  if(digitalRead(1)==HIGH)
+  {
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
 
-  for(int i=0;i<NUMPIXELS;i++){
-
-    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-    pixels.setPixelColor(i, pixels.Color(150,150,0)); // Moderately bright green color.
-
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(150,150,0)); // Moderately bright green color.
+  
+      pixels.show(); // This sends the updated pixel color to the hardware.
+  
+      delay(delayval); // Delay for a period of time (in milliseconds).
+  
+    }
+    delay(500);
+    for(int i=0;i<NUMPIXELS;i++){
+  
+      // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
+    }
     pixels.show(); // This sends the updated pixel color to the hardware.
-
-    delay(delayval); // Delay for a period of time (in milliseconds).
-
-  }
-  delay(500);
-  for(int i=0;i<NUMPIXELS;i++){
-
-    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-    pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
-  }
-  pixels.show(); // This sends the updated pixel color to the hardware.
-  delay(500);
+    delay(500);
+}
 }
