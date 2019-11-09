@@ -31,15 +31,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   PARAMETERS     //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-#define STRIP_PIN                     4         ///< Which pin on the Attiny is connected to the NeoPixels?
-#define NUM_PIXELS                    8         ///< How many NeoPixels are attached to the Arduino?
-#define FIRST_PIXEL_ADDR              0         ///< For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
-#define RIGHT_LED_PIN                 0
-#define LEFT_LED_PIN                  1
-#define BRAKE_LED_PIN                 2
-#define DIRECTION_PROGRESSION_DELAY   100
-#define INITIAL_LED_RIGHT             NUM_PIXELS/2  ///< Connector in left side. Otherwise: int led_right=0;
-#define INITIAL_LED_LEFT              0             ///< Connector in left side. Otherwise: int led_left=(NUM_PIXELS/2);
+#define STRIP_PIN                     4             ///< Which pin on the Attiny is connected to the NeoPixels?
+#define NUM_PIXELS                    8             ///< How many NeoPixels are attached to the Arduino?
+#define FIRST_PIXEL_ADDR              0             ///< For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
+#define RIGHT_LED_PIN                 0             ///< Input from right intermitent motorbike light.
+#define LEFT_LED_PIN                  1             ///< Input from left intermitent motorbike light.
+#define BRAKE_LED_PIN                 2             ///< Input from break motorbike light.
+#define DIRECTION_PROGRESSION_DELAY   100           ///< Time between turning on progressive leds.
+#define INITIAL_LED_RIGHT             NUM_PIXELS/2  ///< First led related to right light with connector in left side. Otherwise: int led_right=0;
+#define INITIAL_LED_LEFT              0             ///< First led related to left light with connector in left side. Otherwise: int led_left=(NUM_PIXELS/2);
+#define TURN_ON_DELAY                 500           ///< Time that direction lights remain on after progression.
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   INSTANCES    //////////////////////////////
@@ -49,19 +50,20 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_PIXELS, STRIP_PIN, NEO_GRB + NEO
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   GLOBAL VARIABLES     //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-uint32_t position_color       = strip.Color(50, 0, 0);      ///< Low bright red color.
-uint32_t direction_color      = strip.Color(200, 200, 0);   ///< Moderately bright yellow color.
-uint32_t brake_color          = strip.Color(200, 0, 0);     ///< Moderately bright red color.
-int led_right                 = INITIAL_LED_RIGHT;
-int led_left                  = INITIAL_LED_LEFT;
-bool turn_right_cmd           = false;
-bool turn_left_cmd            = false;
-bool brake_cmd                = false;
-long last_right_millis        = 0;
-long last_right_light_millis  = 0;
-long progression_delay        = 200;
-long direction_on_delay       = 300;
-long minimum_time_btwn_dir    = 1000;
+uint32_t position_color       = strip.Color(50, 0, 0);      ///< Low bright RED color.
+uint32_t direction_color      = strip.Color(200, 200, 0);   ///< Moderately bright YELLOW color.
+uint32_t brake_color          = strip.Color(200, 0, 0);     ///< Moderately bright RED color.
+int led_right                 = INITIAL_LED_RIGHT;          ///< Variable used to store the current pixel in right progression.
+int led_left                  = INITIAL_LED_LEFT;           ///< Variable used to store the current pixel in left progression.
+bool turn_right_cmd           = false;                      ///< Flag to indicate turn on of the right light.
+bool turn_left_cmd            = false;                      ///< Flag to indicate turn on of the left light.
+bool brake_cmd                = false;                      ///< Flag to indicate turn on of the brake light.
+long last_right_millis        = 0;                          ///< Initialize last time a pixel was turned on in right progression.
+long last_right_light_millis  = 0;                          ///< Initialize last time the right light in the motorbike was turned on.
+long progression_delay        = 200;                        ///< .
+long direction_on_delay       = 300;                        ///< .
+long minimum_time_btwn_dir    = 800;                        ///< .
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   SETUP FUNCTION     //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,11 +73,12 @@ long minimum_time_btwn_dir    = 1000;
 */
 /**************************************************************************/
 void setup() {
-  pinMode(RIGHT_LED_PIN,INPUT);
-  pinMode(LEFT_LED_PIN,INPUT);
-  pinMode(BRAKE_LED_PIN,INPUT);
+  pinMode(RIGHT_LED_PIN,INPUT);          ///< Declare right intermitent led pin as input.
+  pinMode(LEFT_LED_PIN,INPUT);           ///< Declare left intermitent led pin as input.
+  pinMode(BRAKE_LED_PIN,INPUT);          ///< Declare break led pin as input.
   strip.begin();                         ///< This initializes the NeoPixel library.
-  strip.fill(position_color);            ///< Fill the entire strip with one color.
+  delay(TURN_ON_DELAY);                  ///< Make sure the strip is powered.
+  strip.fill(position_color);            ///< Fill the entire strip with position color.
   strip.show();                          ///< This sends the updated pixel color to the hardware.
 }
 
@@ -86,21 +89,22 @@ void setup() {
 */
 /**************************************************************************/
 void turn_right(){
-  if ((turn_right_cmd) && (turn_left_cmd==false) && (brake_cmd==false)){
-    if(led_right<=NUM_PIXELS){
-      unsigned long current_right_millis = millis();
-      if(current_right_millis - last_right_millis >= progression_delay){
-        strip.setPixelColor(led_right,direction_color);
-        strip.show();
-        led_right=led_right+1;
-        last_right_millis=current_right_millis;
+  if ((turn_right_cmd) && (turn_left_cmd==false) && (brake_cmd==false)){        ///< .
+    if(led_right<=NUM_PIXELS){                                                  ///< .
+      unsigned long current_right_millis = millis();                            ///< .
+      if(current_right_millis - last_right_millis >= progression_delay){        ///< .
+        strip.setPixelColor(led_right,direction_color);                         ///< .
+        strip.show();                                                           ///< .
+        led_right=led_right+1;                                                  ///< .
+        last_right_millis=current_right_millis;                                 ///< .
       }
-    }else{
-      unsigned long current_right_millis = millis();
-      if(current_right_millis - last_right_millis >= direction_on_delay){
-        led_right=INITIAL_LED_RIGHT;
-        turn_right_cmd=false;
-        strip.fill(position_color);
+    }else{                                                                      ///< .
+      unsigned long current_right_millis = millis();                            ///< .
+      if(current_right_millis - last_right_millis >= direction_on_delay){       ///< .
+        led_right=INITIAL_LED_RIGHT;                                            ///< .
+        turn_right_cmd=false;                                                   ///< .
+        strip.fill(position_color);                                             ///< .
+        strip.show();                                                           ///< .
       }
    }else{
       ///< poner de posición o freno
@@ -115,7 +119,9 @@ void turn_right(){
 */
 /**************************************************************************/
 void turn_left(){
-
+  if ((turn_left_cmd) && (turn_right_cmd==false) && (brake_cmd==false)){        ///< .
+    strip.fill(direction_color);                                                ///< .
+    strip.show();                                                               ///< .
 }
 
 /**************************************************************************/
@@ -125,8 +131,9 @@ void turn_left(){
 */
 /**************************************************************************/
 void brake(){
-
-
+if ((turn_left_cmd) && (turn_right_cmd==false) && (brake_cmd==false)){          ///< .
+    strip.fill(brake_color);                                                    ///< .
+    strip.show();                                                               ///< .
 }
 
 /**************************************************************************/
@@ -136,20 +143,20 @@ void brake(){
 */
 /**************************************************************************/
 void check_inputs(){
-  if(digitalRead(RIGHT_LED_PIN))
-    unsigned long current_right_light_millis = millis();
-    if(current_right_light_millis-last_right_light_millis>minimum_time_btwn_dir)
-      turn_right_cmd=true;
-  else
-    turn_right_cmd=false;
-  if(digitalRead(LEFT_LED_PIN))
-    turn_left_cmd=true;
-  else
-    turn_left_cmd=false;
-  if(digitalRead(BRAKE_LED_PIN))
-    brake_cmd=true;
-  else
-    brake_cmd=false;
+  if(digitalRead(RIGHT_LED_PIN))                                                ///< .
+    unsigned long current_right_light_millis = millis();                        ///< .
+    if(current_right_light_millis-last_right_light_millis>minimum_time_btwn_dir)///< .
+      turn_right_cmd=true;                                                      ///< .
+  else                                                                          ///< .
+    turn_right_cmd=false;                                                       ///< .
+  if(digitalRead(LEFT_LED_PIN))                                                 ///< .
+    turn_left_cmd=true;                                                         ///< .
+  else                                                                          ///< .
+    turn_left_cmd=false;                                                        ///< .
+  if(digitalRead(BRAKE_LED_PIN))                                                ///< .
+    brake_cmd=true;                                                             ///< .
+  else                                                                          ///< .
+    brake_cmd=false;                                                            ///< .
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,8 +168,8 @@ void check_inputs(){
 */
 /**************************************************************************/
 void loop() {
-  check_inputs();
-  turn_right();
-  turn_left();
-  brake();
+  check_inputs();                                                               ///< .
+  turn_right();                                                                 ///< .
+  turn_left();                                                                  ///< .
+  brake();                                                                      ///< .
 }
