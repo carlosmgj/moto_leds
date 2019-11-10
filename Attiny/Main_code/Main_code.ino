@@ -1,10 +1,12 @@
 /**@file Main_code.ino
+* @page Programming
 * @brief Attiny sketch to control addressable LED strips reading lights signals from motorbike.
 * @section intro_sec Introduction
-* @subsection Things to have in mind
+* Write Intro
+* @subsection min_sec Things to have in mind
 * - Motorbike lights work with 12V. A DC-DC converter is needed for powering the Attiny85.
 * - Motorbike voltage is not as stable as it should due to the alternator properties.
-* @subsection Components
+* @	section Components
 * - TSR 2-2450 (DC-DC converter. Output: 5V 2A).
 * - Attiny85 (Clock at 8 MHz).
 * - CNY74-2 x2 (Optocoupler 2 Channel).
@@ -18,6 +20,9 @@
 * Written by Carlos Manuel Gomez Jimenez. November 2019.
 * @section license License
 * BSD license, all text here must be included in any redistribution.
+* @section Code
+* @copydoc
+* Main_code.ino
 */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +46,7 @@
 #define DIRECTION_ON_DELAY            300              ///< Time with all LEDs turned on in progression.
 #define INITIAL_LED_RIGHT             NUM_PIXELS/2     ///< First led related to right light with connector in left side. Otherwise: int led_right=0;
 #define SECOND_THIRD_FIRST_PIXEL      NUM_PIXELS/3     ///< .
-#define THIRD_THIRD_FIRST_PIXEL       2*(NUM-PIXELS/3) ///< .
+#define THIRD_THIRD_FIRST_PIXEL       2*(NUM_PIXELS/3) ///< .
 #define INITIAL_LED_LEFT              0                ///< First led related to left light with connector in left side. Otherwise: int led_left=(NUM_PIXELS/2);
 #define TURN_ON_DELAY                 500              ///< Time that direction lights remain on after progression.
 #define MIN_TIME_BTWN_DIR             800              ///< .
@@ -73,52 +78,47 @@ bool right_light_reading;                                                       
 bool last_right_light_state   = false;                                                    ///< .
 bool right_light_state;                                                                   ///< .
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   SETUP FUNCTION     //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/**************************************************************************/
 /*!
     @brief    Code executed one time at the beginning.
 */
-/**************************************************************************/
 void setup() {
-  pinMode(RIGHT_LED_PIN,INPUT);                  ///< Declare right intermitent led pin as input.
-  pinMode(LEFT_LED_PIN,INPUT);                   ///< Declare left intermitent led pin as input.
-  pinMode(BRAKE_LED_PIN,INPUT);                  ///< Declare break led pin as input.
-  strip.begin();                                 ///< This initializes the NeoPixel library.
-  delay(TURN_ON_DELAY);                          ///< Make sure the strip is powered.
-  for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){  ///< Fill the entire strip with position color.
+  pinMode(RIGHT_LED_PIN,INPUT);                  // Declare right intermitent led pin as input.
+  pinMode(LEFT_LED_PIN,INPUT);                   // Declare left intermitent led pin as input.
+  pinMode(BRAKE_LED_PIN,INPUT);                  // Declare break led pin as input.
+  strip.begin();                                 // This initializes the NeoPixel library.
+  delay(TURN_ON_DELAY);                          // Make sure the strip is powered.
+  for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){  // Fill the entire strip with position color.
     strip.setPixelColor(i,position_color);                               
   }       
-  strip.show();                                  ///< This sends the updated pixel color to the hardware.
+  strip.show();                                  // This sends the updated pixel color to the hardware.
 }
 
-/**************************************************************************/
 /*!
     @brief    Right light is activated in the motorbike
     @return   None.
 */
-/**************************************************************************/
 void turn_right(){
-  if ((turn_right_cmd==true) && (turn_left_cmd==false) && (brake_cmd==false)){          ///< Just the right light on.
-    if(led_right<=NUM_PIXELS-1){                                                         ///< .
-      unsigned long current_right_millis = millis();                                    ///< .
-      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      ///< .
-        strip.setPixelColor(led_right,direction_color);                                 ///< .
-        strip.show();                                                                   ///< .
-        led_right=led_right+1;                                                          ///< .
-        last_right_millis=current_right_millis;                                         ///< .
+  if ((turn_right_cmd==true) && (turn_left_cmd==false) && (brake_cmd==false)){          // Just the right light on.
+    if(led_right<=NUM_PIXELS-1){                                                        // .
+      unsigned long current_right_millis = millis();                                    // .
+      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      // .
+        strip.setPixelColor(led_right,direction_color);                                 // .
+        strip.show();                                                                   // .
+        led_right=led_right+1;                                                          // .
+        last_right_millis=current_right_millis;                                         // .
       }
-    }else{                                                                              ///< .
-      unsigned long current_right_millis = millis();                                    ///< .
-      if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               ///< .
-        led_right=INITIAL_LED_RIGHT;                                                    ///< .
-        turn_right_cmd=false;                                                           ///< .
-        for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                   ///< Fill the entire strip with position color.
+    }else{                                                                              // .
+      unsigned long current_right_millis = millis();                                    // .
+      if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // .
+        led_right=INITIAL_LED_RIGHT;                                                    // .
+        turn_right_cmd=false;                                                           // .
+        for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                   // Fill the entire strip with position color.
           strip.setPixelColor(i,position_color);                               
         }
-        strip.show();                                                                   ///< .
+        strip.show();                                                                   // .
       }
       else{
       ///< poner de posición o freno
@@ -127,105 +127,94 @@ void turn_right(){
  }//else if((turn_right_cmd==true) && (turn_left_cmd==false) && (brake_cmd==true))
 }
 
-/**************************************************************************/
+
 /*!
     @brief    Left light is activated in the motorbike
     @return   None.
 */
-/**************************************************************************/
 void turn_left(){
-  if ((turn_left_cmd==true) && (turn_right_cmd==false) && (brake_cmd==false)){  ///< .
-    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                               ///< Fill the entire strip with position color.
+  if ((turn_left_cmd==true) && (turn_right_cmd==false) && (brake_cmd==false)){  // .
+    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                               // Fill the entire strip with position color.
       strip.setPixelColor(i,direction_color);                               
     }
-    strip.show();                                                               ///< .
+    strip.show();                                                               // .
   }
 }
 
-/**************************************************************************/
 /*!
     @brief    Break light is activated in the motorbike
     @return   None.
 */
-/**************************************************************************/
 void brake(){
-  if ((brake_cmd==true) && (turn_left_cmd==false) && (turn_right_cmd==false)){  ///< .
-    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                               ///< Fill the entire strip with position color.
+  if ((brake_cmd==true) && (turn_left_cmd==false) && (turn_right_cmd==false)){  // .
+    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                               // Fill the entire strip with position color.
         strip.setPixelColor(i,brake_color);                               
       }
-      strip.show();                                                             ///< .
+      strip.show();                                                             // .
   }
 }
 
-/**************************************************************************/
 /*!
     @brief    Position light is activated in the motorbike
     @return   None.
 */
-/**************************************************************************/
 void position_f(){
-  if ((brake_cmd==false) && (turn_left_cmd==false) && (turn_right_cmd==false)){ ///< .
-   for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                ///< Fill the entire strip with position color.
+  if ((brake_cmd==false) && (turn_left_cmd==false) && (turn_right_cmd==false)){ // .
+   for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                // Fill the entire strip with position color.
     strip.setPixelColor(i,position_color);                               
   }
-      strip.show();                                                             ///< .
+      strip.show();                                                             // .
   }
 }
 
-/**************************************************************************/
 /*!
     @brief    Emergency light is activated in the motorbike
     @return   None.
 */
-/**************************************************************************/
 void emergency(){
-  if ((brake_cmd==false) && (turn_left_cmd==true) && (turn_right_cmd==true)){ ///< .
+  if ((brake_cmd==false) && (turn_left_cmd==true) && (turn_right_cmd==true)){   // .
   }
 }
 
-/**************************************************************************/
+
 /*!
     @brief    Read input pins to decide which lights turn on.
     @return   None.
 */
-/**************************************************************************/
 void check_inputs(){
   int right_light_reading=digitalRead(RIGHT_LED_PIN);
-  if(right_light_reading!=last_right_light_state){                              ///< .
-    last_right_light_debounce = millis();                                       ///< .
+  if(right_light_reading!=last_right_light_state){                              // .
+    last_right_light_debounce = millis();                                       // .
   }
-  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                        ///< .
-      if(right_light_reading != right_light_state){                             ///< .
-        right_light_state=right_light_reading;                                  ///< .
-        if (right_light_state==true){                                           ///< .
-          turn_right_cmd=true;                                                  ///< .
+  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                        // .
+      if(right_light_reading != right_light_state){                             // .
+        right_light_state=right_light_reading;                                  // .
+        if (right_light_state==true){                                           // .
+          turn_right_cmd=true;                                                  // .
         } 
       }  
   }
-  last_right_light_state=right_light_reading;                                   ///< .
-  if(digitalRead(LEFT_LED_PIN))                                                 ///< .
-    turn_left_cmd=true;                                                         ///< .
-  else                                                                          ///< .
-    turn_left_cmd=false;                                                        ///< .
-  if(digitalRead(BRAKE_LED_PIN))                                                ///< .
-    brake_cmd=true;                                                             ///< .
-  else                                                                          ///< .
-    brake_cmd=false;                                                            ///< .
+  last_right_light_state=right_light_reading;                                   // .
+  if(digitalRead(LEFT_LED_PIN))                                                 // .
+    turn_left_cmd=true;                                                         // .
+  else                                                                          // .
+    turn_left_cmd=false;                                                        // .
+  if(digitalRead(BRAKE_LED_PIN))                                                // .
+    brake_cmd=true;                                                             // .
+  else                                                                          // .
+    brake_cmd=false;                                                            // .
 }
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////  MAIN LOOP FUNCTION  //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/**************************************************************************/
 /*!
     @brief    Main loop repeated constantly.
 */
-/**************************************************************************/
 void loop() {
-  check_inputs();                                                               ///< .
-  turn_right();                                                                 ///< .
-  turn_left();                                                                  ///< .
-  position_f();                                                                 ///< .
+  check_inputs();                                                               // .
+  turn_right();                                                                 // .
+  turn_left();                                                                  // .
+  position_f();                                                                 // .
   emergency();
-  brake();                                                                      ///< .
+  brake();                                                                      // .
 }
