@@ -111,6 +111,7 @@ void setup() {
     @return   None.
 */
 void turn_right(){
+  unsigned long current_right_millis;
   if ((turn_right_cmd==true) && (brake_cmd==false)){                                    // Just the right light on.
     if(led_right<=NUM_PIXELS-1){                                                        // .
       unsigned long current_right_millis = millis();                                    // .
@@ -130,19 +131,48 @@ void turn_right(){
         }
         strip.show();                                                                   // .
       }
-      else{
-      ///< poner de posición o freno
-      }
    }
- }//else if((turn_right_cmd==true) && (turn_left_cmd==false) && (brake_cmd==true))
+ }else if((turn_right_cmd==true) && (brake_cmd==true)){                                 // .
+   for(int i=FIRST_PIXEL_ADDR;i<5;i++){                                     // Fill the entire strip with position color.
+      strip.setPixelColor(i,30,0,0);
+   }
+   strip.show();                                                                      // .   
+   if(led_right<=NUM_PIXELS-1){// .
+    if(led_right>=5){
+      current_right_millis = millis();                                                // .
+      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){    // .
+        strip.setPixelColor(led_right,direction_color);                               // .
+        strip.show();                                                                 // .
+        led_right=led_right+1;                                                        // .
+        last_right_millis=current_right_millis;                                       // .
+      }
+    }else if(led_right<5){
+      led_right=5;
+      strip.setPixelColor(led_right,direction_color);                                 // .
+      strip.show();                                                                   // .
+      led_right=led_right+1;                                                          // .
+      last_right_millis=current_right_millis;                                         // .
+    }
+  }else{                                                                              // .
+    unsigned long current_right_millis = millis();                                    // .
+    if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // .
+      led_right=5;                                                                    // .
+      turn_right_cmd=false;                                                           // .
+      for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                   // Fill the entire strip with position color.
+        strip.setPixelColor(i,30,0,0);
+      }
+      strip.show();                                                                   // .
+    }   
+  }  
+ }
 }
-
 
 /*!
     @brief    Left light is activated in the motorbike
     @return   None.
 */
 void turn_left(){
+  unsigned long current_left_millis;
   if ((turn_left_cmd==true) && (brake_cmd==false)){                                   // Just the right light on.
     if(led_left>=FIRST_PIXEL_ADDR){                                                   // .
       unsigned long current_left_millis = millis();                                   // .
@@ -153,7 +183,7 @@ void turn_left(){
         last_left_millis=current_left_millis;                                         // .
       }
     }else{                                                                            // .
-      unsigned long current_left_millis = millis();                                   // .
+      current_left_millis = millis();                                   // .
       if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){               // .
         led_left=INITIAL_LED_LEFT;                                                    // .
         turn_left_cmd=false;                                                          // .
@@ -166,7 +196,39 @@ void turn_left(){
       ///< poner de posición o freno
       }
    }
-  }//else if((turn_right_cmd==true) && (turn_left_cmd==false) && (brake_cmd==true))
+  }else if((turn_left_cmd==true) && (brake_cmd==true)){                                 // .
+   for(int i=3;i<NUM_PIXELS;i++){                                     // Fill the entire strip with position color.
+      strip.setPixelColor(i,30,0,0);
+   }
+   strip.show();                                                                     // .   
+   if(led_left>=FIRST_PIXEL_ADDR){// .
+    if(led_left<=2){
+      current_left_millis = millis();                                    // .
+      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){      // .
+        strip.setPixelColor(led_left,direction_color);                                 // .
+        strip.show();                                                                   // .
+        led_left=led_left-1;                                                          // .
+        last_left_millis=current_left_millis;                                         // .
+      }
+    }else if(led_left>2){
+      led_left=2;
+      strip.setPixelColor(led_left,direction_color);                                 // .
+      strip.show();                                                                   // .
+      led_left=led_left-1;                                                          // .
+      last_left_millis=current_left_millis;                                         // .
+    }
+  }else{                                                                              // .
+    unsigned long current_left_millis = millis();                                    // .
+    if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){               // .
+      led_left=2;                                                    // .
+      turn_left_cmd=false;                                                           // .
+      for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                     // Fill the entire strip with position color.
+        strip.setPixelColor(i,30,0,0);
+      }
+      strip.show();                                                                   // .
+    }   
+  }  
+ }
 }
 
 /*!
