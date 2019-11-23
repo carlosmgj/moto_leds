@@ -2,7 +2,12 @@
 * @page Programming
 * @brief Attiny sketch to control addressable LED strips reading lights signals from motorbike.
 * @section intro_sec Introduction
-* Write Intro
+*
+*
+* @ref Main_code.ino "Arduino code"
+*
+* @ref arduino_diagrams.md
+*
 * @subsection min_sec Things to have in mind
 * - Motorbike lights work with 12V. A DC-DC converter is needed for powering the Attiny85.
 * - Motorbike voltage is not as stable as it should due to the alternator properties.
