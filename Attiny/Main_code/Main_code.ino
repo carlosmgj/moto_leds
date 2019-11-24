@@ -152,35 +152,35 @@ void turn_right(){
       }
    }
  }else if((turn_right_cmd==true) && (brake_cmd==true)){                                 // .
-   for(int i=FIRST_PIXEL_ADDR;i<5;i++){                                     // Fill the entire strip with position color.
+   for(int i=FIRST_PIXEL_ADDR;i<5;i++){                                                 // Fill the entire strip with position color.
       strip.setPixelColor(i,30,0,0);
    }
-   strip.show();                                                                      // .   
+   strip.show();                                                                        // .   
    if(led_right<=NUM_PIXELS-1){// .
     if(led_right>=5){
-      current_right_millis = millis();                                                // .
-      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){    // .
-        strip.setPixelColor(led_right,direction_color);                               // .
-        strip.show();                                                                 // .
-        led_right=led_right+1;                                                        // .
-        last_right_millis=current_right_millis;                                       // .
+      current_right_millis = millis();                                                  // .
+      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      // .
+        strip.setPixelColor(led_right,direction_color);                                 // .
+        strip.show();                                                                   // .
+        led_right=led_right+1;                                                          // .
+        last_right_millis=current_right_millis;                                         // .
       }
     }else if(led_right<5){
       led_right=5;
-      strip.setPixelColor(led_right,direction_color);                                 // .
-      strip.show();                                                                   // .
-      led_right=led_right+1;                                                          // .
-      last_right_millis=current_right_millis;                                         // .
+      strip.setPixelColor(led_right,direction_color);                                   // .
+      strip.show();                                                                     // .
+      led_right=led_right+1;                                                            // .
+      last_right_millis=current_right_millis;                                           // .
     }
-  }else{                                                                              // .
-    unsigned long current_right_millis = millis();                                    // .
-    if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // .
-      led_right=5;                                                                    // .
-      turn_right_cmd=false;                                                           // .
-      for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                   // Fill the entire strip with position color.
+  }else{                                                                                // .
+    unsigned long current_right_millis = millis();                                      // .
+    if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){                 // .
+      led_right=5;                                                                      // .
+      turn_right_cmd=false;                                                             // .
+      for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                     // Fill the entire strip with position color.
         strip.setPixelColor(i,30,0,0);
       }
-      strip.show();                                                                   // .
+      strip.show();                                                                     // .
     }   
   }  
  }
@@ -192,59 +192,59 @@ void turn_right(){
 */
 void turn_left(){
   unsigned long current_left_millis;
-  if ((turn_left_cmd==true) && (brake_cmd==false)){                                   // Just the right light on.
-    if(led_left>=FIRST_PIXEL_ADDR){                                                   // .
-      unsigned long current_left_millis = millis();                                   // .
-      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){      // .
-        strip.setPixelColor(led_left,direction_color);                                // .
-        strip.show();                                                                 // .
-        led_left=led_left-1;                                                          // .
-        last_left_millis=current_left_millis;                                         // .
+  if ((turn_left_cmd==true) && (brake_cmd==false)){                                     // Just the right light on.
+    if(led_left>=FIRST_PIXEL_ADDR){                                                     // .
+      unsigned long current_left_millis = millis();                                     // .
+      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){        // .
+        strip.setPixelColor(led_left,direction_color);                                  // .
+        strip.show();                                                                   // .
+        led_left=led_left-1;                                                            // .
+        last_left_millis=current_left_millis;                                           // .
       }
-    }else{                                                                            // .
-      current_left_millis = millis();                                   // .
-      if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){               // .
-        led_left=INITIAL_LED_LEFT;                                                    // .
-        turn_left_cmd=false;                                                          // .
-        for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                 // Fill the entire strip with position color.
+    }else{                                                                              // .
+      current_left_millis = millis();                                                   // .
+      if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){                 // .
+        led_left=INITIAL_LED_LEFT;                                                      // .
+        turn_left_cmd=false;                                                            // .
+        for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                   // Fill the entire strip with position color.
           strip.setPixelColor(i,position_color);
         }
-        strip.show();                                                                 // .
+        strip.show();                                                                   // .
       }
       else{
       ///< poner de posición o freno
       }
    }
   }else if((turn_left_cmd==true) && (brake_cmd==true)){                                 // .
-   for(int i=3;i<NUM_PIXELS;i++){                                     // Fill the entire strip with position color.
+   for(int i=3;i<NUM_PIXELS;i++){                                                       // Fill the entire strip with position color.
       strip.setPixelColor(i,30,0,0);
    }
-   strip.show();                                                                     // .   
-   if(led_left>=FIRST_PIXEL_ADDR){// .
+   strip.show();                                                                        // .   
+   if(led_left>=FIRST_PIXEL_ADDR){                                                      // .
     if(led_left<=2){
-      current_left_millis = millis();                                    // .
-      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){      // .
-        strip.setPixelColor(led_left,direction_color);                                 // .
+      current_left_millis = millis();                                                   // .
+      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){        // .
+        strip.setPixelColor(led_left,direction_color);                                  // .
         strip.show();                                                                   // .
-        led_left=led_left-1;                                                          // .
-        last_left_millis=current_left_millis;                                         // .
+        led_left=led_left-1;                                                            // .
+        last_left_millis=current_left_millis;                                           // .
       }
     }else if(led_left>2){
       led_left=2;
-      strip.setPixelColor(led_left,direction_color);                                 // .
-      strip.show();                                                                   // .
-      led_left=led_left-1;                                                          // .
-      last_left_millis=current_left_millis;                                         // .
+      strip.setPixelColor(led_left,direction_color);                                    // .
+      strip.show();                                                                     // .
+      led_left=led_left-1;                                                              // .
+      last_left_millis=current_left_millis;                                             // .
     }
-  }else{                                                                              // .
-    unsigned long current_left_millis = millis();                                    // .
-    if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){               // .
-      led_left=2;                                                    // .
-      turn_left_cmd=false;                                                           // .
+  }else{                                                                                // .
+    unsigned long current_left_millis = millis();                                       // .
+    if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){                   // .
+      led_left=2;                                                                       // .
+      turn_left_cmd=false;                                                              // .
       for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                     // Fill the entire strip with position color.
         strip.setPixelColor(i,30,0,0);
       }
-      strip.show();                                                                   // .
+      strip.show();                                                                     // .
     }   
   }  
  }
@@ -255,11 +255,11 @@ void turn_left(){
     @return   None.
 */
 void brake(){
-  if ((brake_cmd==true) && (turn_left_cmd==false) && (turn_right_cmd==false)){  // .
-    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                               // Fill the entire strip with position color.
+  if ((brake_cmd==true) && (turn_left_cmd==false) && (turn_right_cmd==false)){         // .
+    for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                      // Fill the entire strip with position color.
         strip.setPixelColor(i,brake_color);
       }
-      strip.show();                                                             // .
+      strip.show();                                                                    // .
   }
 }
 
@@ -268,11 +268,11 @@ void brake(){
     @return   None.
 */
 void position_f(){
-  if ((brake_cmd==false) && (turn_left_cmd==false) && (turn_right_cmd==false)){ // .
-   for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                // Fill the entire strip with position color.
+  if ((brake_cmd==false) && (turn_left_cmd==false) && (turn_right_cmd==false)){       // .
+   for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){                                      // Fill the entire strip with position color.
     strip.setPixelColor(i,position_color);
   }
-      strip.show();                                                             // .
+      strip.show();                                                                   // .
   }
 }
 
@@ -281,7 +281,7 @@ void position_f(){
     @return   None.
 */
 void emergency(){
-  if ((brake_cmd==false) && (turn_left_cmd==true) && (turn_right_cmd==true)){   // .
+  if ((brake_cmd==false) && (turn_left_cmd==true) && (turn_right_cmd==true)){         // .
   }
 }
 
@@ -292,18 +292,18 @@ void emergency(){
 */
 void check_right(){
   int right_light_reading=digitalRead(RIGHT_LED_PIN);
-  if(right_light_reading!=last_right_light_state){                              // .
-    last_right_light_debounce = millis();                                       // .
+  if(right_light_reading!=last_right_light_state){                                    // .
+    last_right_light_debounce = millis();                                             // .
   }
-  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                        // .
-      if(right_light_reading != right_light_state){                             // .
-        right_light_state=right_light_reading;                                  // .
-        if (right_light_state==true){                                           // .
-          turn_right_cmd=true;                                                  // .
+  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                              // .
+      if(right_light_reading != right_light_state){                                   // .
+        right_light_state=right_light_reading;                                        // .
+        if (right_light_state==true){                                                 // .
+          turn_right_cmd=true;                                                        // .
         }
       }
   }
-  last_right_light_state=right_light_reading;                                   // .
+  last_right_light_state=right_light_reading;                                         // .
 }
 
 /*!
@@ -312,18 +312,18 @@ void check_right(){
 */
 void check_left(){
   int left_light_reading=digitalRead(LEFT_LED_PIN);
-  if(left_light_reading!=last_left_light_state){                                // .
-    last_left_light_debounce = millis();                                        // .
+  if(left_light_reading!=last_left_light_state){                                      // .
+    last_left_light_debounce = millis();                                              // .
   }
-  if(millis()-last_left_light_debounce>DEBOUNCE_DELAY){                         // .
-      if(left_light_reading != left_light_state){                               // .
-        left_light_state=left_light_reading;                                    // .
-        if (left_light_state==true){                                            // .
-          turn_left_cmd=true;                                                   // .
+  if(millis()-last_left_light_debounce>DEBOUNCE_DELAY){                               // .
+      if(left_light_reading != left_light_state){                                     // .
+        left_light_state=left_light_reading;                                          // .
+        if (left_light_state==true){                                                  // .
+          turn_left_cmd=true;                                                         // .
         }
       }
   }
-  last_left_light_state=left_light_reading;                                     // .
+  last_left_light_state=left_light_reading;                                           // .
 }
 
 /*!
@@ -332,25 +332,25 @@ void check_left(){
 */
 void check_brake(){
   int brake_light_reading=digitalRead(BRAKE_LED_PIN);
-  if(brake_light_reading!=last_brake_light_state){                              // .
-    last_brake_light_debounce = millis();                                       // .
+  if(brake_light_reading!=last_brake_light_state){                                    // .
+    last_brake_light_debounce = millis();                                             // .
   }
-  if(millis()-last_brake_light_debounce>DEBOUNCE_DELAY){                        // .
-      if(brake_light_reading != brake_light_state){                             // .
-        brake_light_state=brake_light_reading;                                  // .
-        if (brake_light_state==true){                                           // .
-          brake_cmd=true;                                                       // .
+  if(millis()-last_brake_light_debounce>DEBOUNCE_DELAY){                              // .
+      if(brake_light_reading != brake_light_state){                                   // .
+        brake_light_state=brake_light_reading;                                        // .
+        if (brake_light_state==true){                                                 // .
+          brake_cmd=true;                                                             // .
         }else
           brake_cmd=false;
       }
   }
-  last_brake_light_state=brake_light_reading;                                   // .
+  last_brake_light_state=brake_light_reading;                                         // .
 
 }
 /*---------------------------------------------
  -----------------------------------------------
  MAIN LOOP FUNCTION
- -----------------------------------------------        
+ -----------------------------------------------        else
  ----------------------------------------------*/
 
 /*!
@@ -358,12 +358,12 @@ void check_brake(){
  @return   None.
  */
 void loop() {
-  check_right();                                                                // .
+  check_right();                                                                      // .
   check_left();
   check_brake();
-  turn_right();                                                                 // .
-  turn_left();                                                                  // .
-  position_f();                                                                 // .
+  turn_right();                                                                       // .
+  turn_left();                                                                        // .
+  position_f();                                                                       // .
   emergency();
-  brake();                                                                      // .
+  brake();                                                                            // .
 }
