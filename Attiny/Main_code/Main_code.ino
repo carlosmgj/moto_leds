@@ -52,7 +52,7 @@
 #define RIGHT_LED_PIN                 0                ///< Input from right intermitent motorbike light.
 #define LEFT_LED_PIN                  1                ///< Input from left intermitent motorbike light.
 #define BRAKE_LED_PIN                 2                ///< Input from break motorbike light.
-#define DIRECTION_PROGRESSION_DELAY   100              ///< Time between turning on progressive leds.
+#define DIRECTION_PROGRESSION_DELAY   20               ///< Time between turning on progressive leds.
 #define DIRECTION_ON_DELAY            300              ///< Time with all LEDs turned on in progression.
 #define INITIAL_LED_RIGHT             35               ///< First led related to right light with connector in left side. Otherwise: int led_right=0;
 #define SECOND_THIRD_FIRST_PIXEL      25               ///< .
@@ -60,7 +60,7 @@
 #define TURN_ON_DELAY                 500              ///< Time that direction lights remain on after progression.
 #define MIN_TIME_BTWN_DIR             800              ///< .
 #define MAX_INTENSITY                 200              ///< .
-#define LOW_INTENSITY                 50               ///< .
+#define LOW_INTENSITY                 20               ///< .
 #define MAX_INTENSITY_TEST            30               ///< .
 #define LOW_INTENSITY_TEST            5                ///< .
 #define DEBOUNCE_DELAY                50               ///< .
@@ -77,9 +77,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_PIXELS, STRIP_PIN, NEO_GRB + NEO
  GLOBAL VARIABLES
  -----------------------------------------------               
  ----------------------------------------------*/
-uint32_t position_color                 = strip.Color(LOW_INTENSITY_TEST, 0, 0);                    ///< Low bright RED color.
-uint32_t direction_color                = strip.Color(MAX_INTENSITY_TEST, MAX_INTENSITY_TEST, 0);   ///< Moderately bright YELLOW color.
-uint32_t brake_color                    = strip.Color(MAX_INTENSITY_TEST, 0, 0);                    ///< Moderately bright RED color.
+  uint32_t position_color               = strip.Color(LOW_INTENSITY, 0, 0);                         ///< Low bright RED color.
+uint32_t direction_color                = strip.Color(MAX_INTENSITY, MAX_INTENSITY, 0);             ///< Moderately bright YELLOW color.
+uint32_t brake_color                    = strip.Color(MAX_INTENSITY, 0, 0);                         ///< Moderately bright RED color.
 int led_right                           = INITIAL_LED_RIGHT;                                        ///< Variable used to store the current pixel in right progression.
 int led_left                            = INITIAL_LED_LEFT;                                         ///< Variable used to store the current pixel in left progression.
 bool turn_right_cmd                     = false;                                                    ///< Flag to indicate turn on of the right light.
@@ -113,15 +113,15 @@ bool brake_light_state                  = false;                                
  @return   None.
  */
 void setup() {
-  pinMode(RIGHT_LED_PIN,INPUT);                  // Declare right intermitent led pin as input.
-  pinMode(LEFT_LED_PIN,INPUT);                   // Declare left intermitent led pin as input.
-  pinMode(BRAKE_LED_PIN,INPUT);                  // Declare break led pin as input.
-  strip.begin();                                 // This initializes the NeoPixel library.
-  delay(TURN_ON_DELAY);                          // Make sure the strip is powered.
-  for(int i=FIRST_PIXEL_ADDR;i<NUM_PIXELS;i++){  // Fill the entire strip with position color.
-    strip.setPixelColor(i,position_color);
-  }
-  strip.show();                                  // This sends the updated pixel color to the hardware.
+  pinMode(RIGHT_LED_PIN,INPUT);                                                       // Declare right intermitent led pin as input.
+  pinMode(LEFT_LED_PIN,INPUT);                                                        // Declare left intermitent led pin as input.
+  pinMode(BRAKE_LED_PIN,INPUT);                                                       // Declare break led pin as input.
+  strip.begin();                                                                      // This initializes the NeoPixel library.
+  delay(TURN_ON_DELAY);                                                               // Make sure the strip is powered.
+  for(int i=SECOND_THIRD_FIRST_PIXEL;i<INITIAL_LED_RIGHT;i++){                        // Fill the entire strip with position color.
+        strip.setPixelColor(i,position_color);
+      }
+  strip.show();                                                                       // This sends the updated pixel color to the hardware.
 }
 
 /*!
@@ -131,7 +131,7 @@ void setup() {
 void turn_right(){
   unsigned long current_right_millis;
   if (turn_right_cmd==true) {                                                           // Just the right light on.
-    if(led_right<=NUM_PIXELS-1){                                                        // .
+    if(led_right<NUM_PIXELS){                                                           // .
       unsigned long current_right_millis = millis();                                    // .
       if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      // .
         strip.setPixelColor(led_right,direction_color);                                 // .
@@ -139,10 +139,13 @@ void turn_right(){
         last_right_millis=current_right_millis;                                         // .
       }
     }else{                                                                              // .
-      unsigned long current_right_millis = millis();                                    // .
+      current_right_millis = millis();                                    // .
       if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // .
         led_right=INITIAL_LED_RIGHT;                                                    // .
         turn_right_cmd=false;                                                           // .
+        for(int i=INITIAL_LED_RIGHT;i<NUM_PIXELS;i++){                                  // Fill the entire strip with position color.
+          strip.setPixelColor(i,0,0,0);
+        }
       }
    }
  }
@@ -167,6 +170,9 @@ void turn_left(){
       if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){                 // .
         led_left=INITIAL_LED_LEFT;                                                      // .
         turn_left_cmd=false;                                                            // .
+        for(int i=INITIAL_LED_LEFT;i>=FIRST_PIXEL_ADDR;i--){                             // Fill the entire strip with position color.
+          strip.setPixelColor(i,0,0,0);
+        }      
       }
    }
   }
@@ -187,16 +193,6 @@ void brake(){
       }
   }
 }
-
-/*!
-    @brief    Emergency light is activated in the motorbike
-    @return   None.
-*/
-void emergency(){
-  if ((brake_cmd==false) && (turn_left_cmd==true) && (turn_right_cmd==true)){         // .
-  }
-}
-
 
 /*!
     @brief    Read right light state.
