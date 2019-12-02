@@ -9,6 +9,7 @@ addons:
     packages:
       - doxygen
       - graphviz
+      - dia
 
 
 script:
@@ -22,4 +23,5 @@ deploy:
   local_dir: docs/html
   github_token: $GH_REPO_TOKEN
   on:
-    branch: tres_tramos
+    all_branches: true
+    #branch: tres_tramos
