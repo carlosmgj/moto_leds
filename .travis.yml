@@ -3,6 +3,7 @@ sudo: false
 branches:
   only:
     - tres_tramos
+    - master
 
 addons:
   apt:
