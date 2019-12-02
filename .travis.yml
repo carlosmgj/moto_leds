@@ -9,14 +9,16 @@ addons:
     packages:
       - doxygen
       - graphviz
-      
+
 
 script:
+
+  - cd ../scripts
   - doxygen scripts/Doxyfile
 
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: ../docs/html
+  local_dir: docs/html
   on:
     branch: tres_tramos
