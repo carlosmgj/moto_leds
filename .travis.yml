@@ -8,6 +8,8 @@ addons:
   apt:
     packages:
       - doxygen
+      - graphviz
+      
 
 script:
   - doxygen scripts/Doxyfile
