@@ -59,12 +59,12 @@
 #define SECOND_THIRD_FIRST_PIXEL      25               ///< aaaa.
 #define INITIAL_LED_LEFT              24               ///< First led related to left light with connector in left side. Otherwise: int led_left=(NUM_PIXELS/2);
 #define TURN_ON_DELAY                 500              ///< Time that direction lights remain on after progression.
-#define MIN_TIME_BTWN_DIR             800              ///< .
-#define MAX_INTENSITY                 200              ///< .
-#define LOW_INTENSITY                 20               ///< .
-#define MAX_INTENSITY_TEST            30               ///< .
-#define LOW_INTENSITY_TEST            5                ///< .
-#define DEBOUNCE_DELAY                50               ///< .
+#define MIN_TIME_BTWN_DIR             800              ///< bbb.
+#define MAX_INTENSITY                 200              ///< ccc.
+#define LOW_INTENSITY                 20               ///< ddd.
+#define MAX_INTENSITY_TEST            30               ///< eeee.
+#define LOW_INTENSITY_TEST            5                ///< ffff.
+#define DEBOUNCE_DELAY                50               ///< gggg.
 
 /*---------------------------------------------
  -----------------------------------------------
@@ -88,19 +88,19 @@ bool turn_left_cmd                      = false;                                
 bool brake_cmd                          = false;                                                    ///< Flag to indicate turn on of the brake light.
 unsigned long last_right_millis         = 0;                                                        ///< Initialize last time a pixel was turned on in right progression.
 unsigned long last_right_light_debounce = TURN_ON_DELAY;                                            ///< Initialize last time the right light in the motorbike was turned on.
-bool right_light_reading                = false;                                                    ///< .
-bool last_right_light_state             = false;                                                    ///< .
-bool right_light_state                  = false;                                                    ///< .
+bool right_light_reading                = false;                                                    ///< hhhh.
+bool last_right_light_state             = false;                                                    ///< iiii.
+bool right_light_state                  = false;                                                    ///< jjjjj.
 unsigned long last_left_millis          = 0;                                                        ///< Initialize last time a pixel was turned on in left progression.
 unsigned long last_left_light_debounce  = TURN_ON_DELAY;                                            ///< Initialize last time the left light in the motorbike was turned on.
-bool left_light_reading                 = false;                                                    ///< .
-bool last_left_light_state              = false;                                                    ///< .
-bool left_light_state                   = false;                                                    ///< .
+bool left_light_reading                 = false;                                                    ///< kkkkk.
+bool last_left_light_state              = false;                                                    ///< lllll.
+bool left_light_state                   = false;                                                    ///< mmmmm.
 unsigned long last_brake_millis         = 0;                                                        ///< Initialize last time a pixel was turned on in left progression.
 unsigned long last_brake_light_debounce = TURN_ON_DELAY;                                            ///< Initialize last time the left light in the motorbike was turned on.
-bool brake_light_reading                = false;                                                    ///< .
-bool last_brake_light_state             = false;                                                    ///< .
-bool brake_light_state                  = false;                                                    ///< .
+bool brake_light_reading                = false;                                                    ///< nnnn.
+bool last_brake_light_state             = false;                                                    ///< oooo.
+bool brake_light_state                  = false;                                                    ///< ppppp.
 
 /*---------------------------------------------
  -----------------------------------------------
@@ -132,18 +132,18 @@ void setup() {
 void turn_right(){
   unsigned long current_right_millis;
   if (turn_right_cmd==true) {                                                           // Just the right light on.
-    if(led_right<NUM_PIXELS){                                                           // .
-      unsigned long current_right_millis = millis();                                    // .
-      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      // .
-        strip.setPixelColor(led_right,direction_color);                                 // .
-        led_right=led_right+1;                                                          // .
-        last_right_millis=current_right_millis;                                         // .
+    if(led_right<NUM_PIXELS){                                                           // qqq.
+      unsigned long current_right_millis = millis();                                    // rrrr.
+      if(current_right_millis - last_right_millis >= DIRECTION_PROGRESSION_DELAY){      // sssss.
+        strip.setPixelColor(led_right,direction_color);                                 // ttttt.
+        led_right=led_right+1;                                                          // uuuuu.
+        last_right_millis=current_right_millis;                                         // vvvvvv.
       }
-    }else{                                                                              // .
-      current_right_millis = millis();                                    // .
-      if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // .
-        led_right=INITIAL_LED_RIGHT;                                                    // .
-        turn_right_cmd=false;                                                           // .
+    }else{                                                                              // wwww.
+      current_right_millis = millis();                                                  // xxxx.
+      if(current_right_millis - last_right_millis >= DIRECTION_ON_DELAY){               // yyyy.
+        led_right=INITIAL_LED_RIGHT;                                                    // zzzzz.
+        turn_right_cmd=false;                                                           // abbb.
         for(int i=INITIAL_LED_RIGHT;i<NUM_PIXELS;i++){                                  // Fill the entire strip with position color.
           strip.setPixelColor(i,0,0,0);
         }
@@ -159,18 +159,18 @@ void turn_right(){
 void turn_left(){
   unsigned long current_left_millis;
   if (turn_left_cmd==true){                                                             // Just the right light on.
-    if(led_left>=FIRST_PIXEL_ADDR){                                                     // .
-      unsigned long current_left_millis = millis();                                     // .
-      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){        // .
-        strip.setPixelColor(led_left,direction_color);                                  // .
-        led_left=led_left-1;                                                            // .
-        last_left_millis=current_left_millis;                                           // .
+    if(led_left>=FIRST_PIXEL_ADDR){                                                     // accccc.
+      unsigned long current_left_millis = millis();                                     // adddd.
+      if(current_left_millis - last_left_millis >= DIRECTION_PROGRESSION_DELAY){        // aeeee.
+        strip.setPixelColor(led_left,direction_color);                                  // afffff.
+        led_left=led_left-1;                                                            // aggggg.
+        last_left_millis=current_left_millis;                                           // ahhhh.
       }
-    }else{                                                                              // .
-      current_left_millis = millis();                                                   // .
-      if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){                 // .
-        led_left=INITIAL_LED_LEFT;                                                      // .
-        turn_left_cmd=false;                                                            // .
+    }else{                                                                              // aiiiii.
+      current_left_millis = millis();                                                   // ajjjjj.
+      if(current_left_millis - last_left_millis >= DIRECTION_ON_DELAY){                 // akkkk.
+        led_left=INITIAL_LED_LEFT;                                                      // alllll.
+        turn_left_cmd=false;                                                            // ammmm.
         for(int i=INITIAL_LED_LEFT;i>=FIRST_PIXEL_ADDR;i--){                             // Fill the entire strip with position color.
           strip.setPixelColor(i,0,0,0);
         }      
@@ -184,7 +184,7 @@ void turn_left(){
     @return   None.
 */
 void brake(){
-  if (brake_cmd==true){                                                                // .
+  if (brake_cmd==true){                                                                // annnn.
     for(int i=SECOND_THIRD_FIRST_PIXEL;i<INITIAL_LED_RIGHT;i++){                       // Fill the entire strip with position color.
         strip.setPixelColor(i,brake_color);
       }
@@ -201,18 +201,18 @@ void brake(){
 */
 void check_right(){
   int right_light_reading=digitalRead(RIGHT_LED_PIN);
-  if(right_light_reading!=last_right_light_state){                                    // .
-    last_right_light_debounce = millis();                                             // .
+  if(right_light_reading!=last_right_light_state){                                    // aoooo.
+    last_right_light_debounce = millis();                                             // apppp.
   }
-  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                              // .
-      if(right_light_reading != right_light_state){                                   // .
-        right_light_state=right_light_reading;                                        // .
-        if (right_light_state==true){                                                 // .
-          turn_right_cmd=true;                                                        // .
+  if(millis()-last_right_light_debounce>DEBOUNCE_DELAY){                              // aqqqq.
+      if(right_light_reading != right_light_state){                                   // arrrr.
+        right_light_state=right_light_reading;                                        // assss.
+        if (right_light_state==true){                                                 // attt.
+          turn_right_cmd=true;                                                        // auuu.
         }
       }
   }
-  last_right_light_state=right_light_reading;                                         // .
+  last_right_light_state=right_light_reading;                                         // avvvv.
 }
 
 /*!
@@ -221,18 +221,18 @@ void check_right(){
 */
 void check_left(){
   int left_light_reading=digitalRead(LEFT_LED_PIN);
-  if(left_light_reading!=last_left_light_state){                                      // .
-    last_left_light_debounce = millis();                                              // .
+  if(left_light_reading!=last_left_light_state){                                      // aww.
+    last_left_light_debounce = millis();                                              // axxxx.
   }
-  if(millis()-last_left_light_debounce>DEBOUNCE_DELAY){                               // .
-      if(left_light_reading != left_light_state){                                     // .
-        left_light_state=left_light_reading;                                          // .
-        if (left_light_state==true){                                                  // .
-          turn_left_cmd=true;                                                         // .
+  if(millis()-last_left_light_debounce>DEBOUNCE_DELAY){                               // ayyyy.
+      if(left_light_reading != left_light_state){                                     // azzzz.
+        left_light_state=left_light_reading;                                          // baaaa.
+        if (left_light_state==true){                                                  // bcccc.
+          turn_left_cmd=true;                                                         // bdddddd.
         }
       }
   }
-  last_left_light_state=left_light_reading;                                           // .
+  last_left_light_state=left_light_reading;                                           // beeee.
 }
 
 /*!
@@ -241,19 +241,19 @@ void check_left(){
 */
 void check_brake(){
   int brake_light_reading=digitalRead(BRAKE_LED_PIN);
-  if(brake_light_reading!=last_brake_light_state){                                    // .
-    last_brake_light_debounce = millis();                                             // .
+  if(brake_light_reading!=last_brake_light_state){                                    // bffff.
+    last_brake_light_debounce = millis();                                             // bgggg.
   }
-  if(millis()-last_brake_light_debounce>DEBOUNCE_DELAY){                              // .
-      if(brake_light_reading != brake_light_state){                                   // .
-        brake_light_state=brake_light_reading;                                        // .
-        if (brake_light_state==true){                                                 // .
-          brake_cmd=true;                                                             // .
+  if(millis()-last_brake_light_debounce>DEBOUNCE_DELAY){                              // bhhhh.
+      if(brake_light_reading != brake_light_state){                                   // biiii.
+        brake_light_state=brake_light_reading;                                        // bjjjjj.
+        if (brake_light_state==true){                                                 // bkkkkk.
+          brake_cmd=true;                                                             // blllll.
         }else
           brake_cmd=false;
       }
   }
-  last_brake_light_state=brake_light_reading;                                         // .
+  last_brake_light_state=brake_light_reading;                                         // bmmmmm.
 }
 
 /*---------------------------------------------
@@ -267,12 +267,12 @@ void check_brake(){
  @return   None.
  */
 void loop() {
-  check_right();                                                                      // .
+  check_right();                                                                      // boooo.
   check_left();
   check_brake();
-  turn_right();                                                                       // .
-  turn_left();                                                                        // .
+  turn_right();                                                                       // bpppp.
+  turn_left();                                                                        // bqqqq.
   emergency();
-  brake();                                                                            // .
+  brake();                                                                            // brrrrr.
   strip.show();
 }
