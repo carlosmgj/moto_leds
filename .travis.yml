@@ -9,14 +9,14 @@ depth: false
 quiet: true
 env:
 global:
-- ARDUINO_IDE_VERSION="1.8.7"
-- PRETTYNAME="Proyecto de LED para moto"
+#- ARDUINO_IDE_VERSION="1.8.7"
+#- PRETTYNAME="Proyecto de LED para moto"
 # Optional, will default to "$TRAVIS_BUILD_DIR/Doxyfile"
 # - DOXYFILE: $TRAVIS_BUILD_DIR/Doxyfile
 before_install:
-- source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+#- source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-- arduino --install-library "Adafruit ILI9341","Adafruit GFX Library"
+#- arduino --install-library "Adafruit ILI9341","Adafruit GFX Library"
 script:
 #- build_main_platforms
 # Generate and deploy documentation
