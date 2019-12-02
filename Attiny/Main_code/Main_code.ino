@@ -46,6 +46,7 @@
  -----------------------------------------------                   
  ----------------------------------------------*/
 
+
 #define STRIP_PIN                     4                ///< Which pin on the Attiny is connected to the NeoPixels?
 #define NUM_PIXELS                    60               ///< How many NeoPixels are attached to the Arduino?
 #define FIRST_PIXEL_ADDR              0                ///< For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
