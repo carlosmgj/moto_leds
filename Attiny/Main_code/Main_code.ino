@@ -56,7 +56,7 @@
 #define DIRECTION_PROGRESSION_DELAY   20               ///< Time between turning on progressive leds.
 #define DIRECTION_ON_DELAY            300              ///< Time with all LEDs turned on in progression.
 #define INITIAL_LED_RIGHT             35               ///< First led related to right light with connector in left side. Otherwise: int led_right=0;
-#define SECOND_THIRD_FIRST_PIXEL      25               ///< .
+#define SECOND_THIRD_FIRST_PIXEL      25               ///< aaaa.
 #define INITIAL_LED_LEFT              24               ///< First led related to left light with connector in left side. Otherwise: int led_left=(NUM_PIXELS/2);
 #define TURN_ON_DELAY                 500              ///< Time that direction lights remain on after progression.
 #define MIN_TIME_BTWN_DIR             800              ///< .
