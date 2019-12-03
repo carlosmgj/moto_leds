@@ -1,0 +1,8 @@
+<map id="loop" name="loop">
+<area shape="rect" id="node2" href="$db/d1a/_main__code_8ino.html#aecccd09b4c2dda88615ddfb6d8cd7145" title="Read right light state. " alt="" coords="107,5,201,32"/>
+<area shape="rect" id="node3" href="$db/d1a/_main__code_8ino.html#aa6688ef7512d3a167050de00196b997e" title="Read left light state. " alt="" coords="111,56,197,83"/>
+<area shape="rect" id="node4" href="$db/d1a/_main__code_8ino.html#ab90097902ceedd56a04d5aee25f565d9" title="Read brake light state. " alt="" coords="103,107,205,133"/>
+<area shape="rect" id="node5" href="$db/d1a/_main__code_8ino.html#aca3b725ebee32d3719a9c02b41002ea3" title="Right light is activated in the motorbike. " alt="" coords="112,157,196,184"/>
+<area shape="rect" id="node6" href="$db/d1a/_main__code_8ino.html#a0565ad7a822d9d334bb50c088af22361" title="Left light is activated in the motorbike. " alt="" coords="117,208,191,235"/>
+<area shape="rect" id="node7" href="$db/d1a/_main__code_8ino.html#aff9b2f2caddd39a66f030c08ef987cd1" title="Break light is activated in the motorbike. " alt="" coords="125,259,183,285"/>
+</map>
