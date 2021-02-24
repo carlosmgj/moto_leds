@@ -22,8 +22,14 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketsServer.h>
 #include <ESP8266WebServer.h>
+#include <Adafruit_NeoPixel.h>
+
 
 #define LED     LED_BUILTIN // D1          
+#define NEOPIXEL D2
+#define NUMPIXELS 1
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(1, NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
 const char* ssid = "LED";
 const char* password = "12345678";
@@ -283,6 +289,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       }else if(firstValue=="VELOCIDAD"){
         Serial.print("VEL: ");
         Serial.println(secondValue.toInt());
+        analogWrite(LED_BUILTIN,map(secondValue.toInt(),0,100,0,255));
       }else if(firstValue=="LEDSFRENO"){
         Serial.print("LEDS FRENO: ");
         Serial.println(secondValue.toInt());
@@ -295,6 +302,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
 
+  pixels.begin();
+  
   WiFi.softAP(ssid, password);
   IPAddress myIP = WiFi.softAPIP(); 
   Serial.print("IP del access point: ");
@@ -326,6 +335,8 @@ void cambioColorFreno(int red, int green, int blue){
       Serial.println(breakG);
       Serial.println(breakB);
       Serial.println("");
+      pixels.setPixelColor(0, pixels.Color(breakR,breakG,breakB));
+      pixels.show();
 }
 
 void loop() {
