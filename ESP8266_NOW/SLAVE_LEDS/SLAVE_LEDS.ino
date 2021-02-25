@@ -54,7 +54,6 @@ static const char PROGMEM INDEX_HTML[] = R"(
   <body>
   <h1>CONTROL LUCES TOP CASE</h1>
   <h2>FRENO</h2>
-  <p id='mensajeLog'></p>
   <label for="name">Número de LEDs:</label>
   <p id='ledsFreno'></p>
   <input type="text" id="textoLEDsFreno" required minlength="4" maxlength="8" size="10">
@@ -63,6 +62,9 @@ static const char PROGMEM INDEX_HTML[] = R"(
   <br><br>
   <label for="colorpicker">Seleccionar color -></label>
    <input type="color" id="colorpicker" value="#0000ff" onchange='PickerFrenoChanged()'>
+   <br>
+   <br>
+   <canvas id="myCanvas2" width="250" height="20" style="border:1px solid #d3d3d3;">Tu navegador no soporta el elemento CANVAS de HTML5.</canvas>
    <br>
     <canvas id="myCanvas" width="250" height="250" style="border:0px solid #d3d3d3;">Tu navegador no soporta el elemento CANVAS de HTML5.</canvas>
     <b>ROJO   </b><input type='range' min='0' max='255' value='175' id='miValorR' oninput='SliderRedChanged()'><br>
@@ -73,18 +75,22 @@ static const char PROGMEM INDEX_HTML[] = R"(
     <p id='valor'></p>
     <script>
         var x;
-        var r=10;
-        var g=20;
-        var b=20;
+        var r=200;
+        var g=0;
+        var b=0;
         var color;
         var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
-
-       
+        var LuzFrenoR = 200;
+        var LuzFrenoG = 200;
+        var LuzFrenoB = 200;
+        
        ActualizarRuletaRojo();
        ActualizarRuletaVerde();
        ActualizarRuletaAzul();
        actualizarColorCentral();
 
+       actualizarLuces();
+        
        document.getElementById('ledsFreno').innerHTML = '15';
         
        connection.onopen = function () {
@@ -94,7 +100,20 @@ static const char PROGMEM INDEX_HTML[] = R"(
        connection.onmessage = function (event) {
          console.log('Servidor (recibe): ', event.data);
          connection.send("LOG"+","+event.data);
-         document.getElementById('mensajeLog').innerHTML = event.data;
+         var canvas = document.getElementById('myCanvas2');
+         var ctx = canvas.getContext('2d');
+         ctx.beginPath();
+         ctx.lineWidth = 40;
+         if(event.data == 0)
+         {
+          ctx.strokeStyle = 'rgb(200,200,200)';
+         }else
+         {    
+          ctx.strokeStyle = 'rgb(255,0,0)';
+         }
+         ctx.moveTo(100,0);
+         ctx.lineTo(150,0);
+         ctx.stroke();
        }
        connection.onerror = function (error) {
          console.log('WebSocket Error!!!', error);
@@ -249,6 +268,17 @@ static const char PROGMEM INDEX_HTML[] = R"(
       context.stroke();
        }
 
+      function actualizarLuces(){
+          var canvas = document.getElementById('myCanvas2');
+          var ctx = canvas.getContext('2d');
+          ctx.beginPath();
+          ctx.lineWidth = 40;
+          ctx.strokeStyle = 'rgb(LuzFrenoR,LuzFrenoG,LuzFrenoB)';
+          ctx.moveTo(100,0);
+          ctx.lineTo(150,0);
+          ctx.stroke();
+      }
+      
       function verValor() {
          x = document.getElementById('miValor').value;
          document.getElementById('valor').innerHTML = 'Velocidad (0-100): ' + x; 
