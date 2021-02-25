@@ -34,9 +34,8 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(1, NEOPIXEL, NEO_GRB + NEO_KHZ800);
 const char* ssid = "LED";
 const char* password = "12345678";
 typedef struct message {
-   int red;
-   int green;
-   int blue;
+  String key;
+  int value;
 } message;
 message myMessage;
 
@@ -316,16 +315,15 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
 void onDataReceiver(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
    Serial.println("Message received.");
-  webSocket.sendTXT(0, "Hola");
+   String mostrar = String(myMessage.value);
+  webSocket.sendTXT(0, mostrar);
    // We don't use mac to verify the sender
    // Let us transform the incomingData into our message structure
   memcpy(&myMessage, incomingData, sizeof(myMessage));
-  Serial.print("Red:");
-  Serial.println(myMessage.red); 
-  Serial.print("Green:");
-  Serial.println(myMessage.green);
-  Serial.print("Blue:");
-  Serial.println(myMessage.blue);
+  Serial.print("KEY:");
+  Serial.println(myMessage.key); 
+  Serial.print("VALUE:");
+  Serial.println(myMessage.value);
 }
 
 void setup() {
