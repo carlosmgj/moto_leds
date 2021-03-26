@@ -78,18 +78,16 @@ static const char PROGMEM INDEX_HTML[] = R"(
         var r=200;
         var g=0;
         var b=0;
-        var color;
+        var color = 'rgb('+r+','+g+','+b+' )';
         var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
-        var LuzFrenoR = 200;
-        var LuzFrenoG = 200;
-        var LuzFrenoB = 200;
-        
+ 
        ActualizarRuletaRojo();
        ActualizarRuletaVerde();
        ActualizarRuletaAzul();
        actualizarColorCentral();
-
-       actualizarLuces();
+       ActualizarCursores();
+        
+       apagarFreno();
         
        document.getElementById('ledsFreno').innerHTML = '15';
         
@@ -100,20 +98,13 @@ static const char PROGMEM INDEX_HTML[] = R"(
        connection.onmessage = function (event) {
          console.log('Servidor (recibe): ', event.data);
          connection.send("LOG"+","+event.data);
-         var canvas = document.getElementById('myCanvas2');
-         var ctx = canvas.getContext('2d');
-         ctx.beginPath();
-         ctx.lineWidth = 40;
          if(event.data == 0)
          {
-          ctx.strokeStyle = 'rgb(200,200,200)';
-         }else
+          apagarFreno();
+         }else if(event.data == 1)
          {    
-          ctx.strokeStyle = 'rgb(255,0,0)';
+          encenderFreno();
          }
-         ctx.moveTo(100,0);
-         ctx.lineTo(150,0);
-         ctx.stroke();
        }
        connection.onerror = function (error) {
          console.log('WebSocket Error!!!', error);
@@ -268,15 +259,27 @@ static const char PROGMEM INDEX_HTML[] = R"(
       context.stroke();
        }
 
-      function actualizarLuces(){
-          var canvas = document.getElementById('myCanvas2');
-          var ctx = canvas.getContext('2d');
-          ctx.beginPath();
-          ctx.lineWidth = 40;
-          ctx.strokeStyle = 'rgb(LuzFrenoR,LuzFrenoG,LuzFrenoB)';
-          ctx.moveTo(100,0);
-          ctx.lineTo(150,0);
-          ctx.stroke();
+      function encenderFreno(){
+         var colorfreno='rgb('+r+','+g+','+b+' )';
+         var canvas = document.getElementById('myCanvas2');
+         var ctx = canvas.getContext('2d');
+         ctx.beginPath();
+         ctx.lineWidth = 40;
+         ctx.strokeStyle = colorfreno;
+         ctx.moveTo(100,0);
+         ctx.lineTo(150,0);
+         ctx.stroke();
+      }
+       function apagarFreno(){
+         var colorfreno='rgb(200,200,200)';
+         var canvas = document.getElementById('myCanvas2');
+         var ctx = canvas.getContext('2d');
+         ctx.beginPath();
+         ctx.lineWidth = 40;
+         ctx.strokeStyle = colorfreno;
+         ctx.moveTo(100,0);
+         ctx.lineTo(150,0);
+         ctx.stroke();
       }
       
       function verValor() {
